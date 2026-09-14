@@ -6,4 +6,5 @@ build/
 .env.*.local
 .neon
 *.log
+*.tsbuildinfo
 .DS_Store
