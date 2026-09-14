@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { prisma } from "../lib/prisma";
-import { requireAuth } from "../middleware/auth";
+import { useDemoUser } from "../middleware/auth";
 
 const router = Router();
-router.use(requireAuth); // every route below requires a logged-in user
+router.use(useDemoUser); // login disabled — see middleware/auth.ts
 
 // GET /api/applications — list the current user's applications, newest first
 router.get("/", async (req, res) => {

@@ -4,6 +4,7 @@ import cors from "cors";
 import { prisma } from "./lib/prisma";
 import authRoutes from "./routes/auth";
 import applicationRoutes from "./routes/applications";
+import { ensureDemoUser } from "./lib/demoUser";
 
 const app = express();
 const port = process.env.PORT ?? 4000;
@@ -23,6 +24,8 @@ app.get("/api/health", async (_req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+ensureDemoUser().then(() => {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
 });

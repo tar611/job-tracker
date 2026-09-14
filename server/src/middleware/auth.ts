@@ -1,5 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { getDemoUserId } from "../lib/demoUser";
+
+// TEMPORARY: login is disabled, so every request acts as the demo user.
+// Swap this back for requireAuth (below) in routes/applications.ts to re-enable login.
+export function useDemoUser(req: Request, _res: Response, next: NextFunction) {
+  req.userId = getDemoUserId();
+  next();
+}
 
 // Verifies the Bearer JWT and attaches the userId to the request.
 export function requireAuth(req: Request, res: Response, next: NextFunction) {

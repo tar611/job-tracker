@@ -62,12 +62,15 @@ export function Dashboard() {
     <div className="min-h-screen bg-slate-50">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
         <h1 className="text-xl font-semibold text-slate-900">Job Application Tracker</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-slate-500">{user?.email}</span>
-          <button onClick={logout} className="text-sm text-slate-500 underline hover:text-slate-700">
-            Log out
-          </button>
-        </div>
+        {/* Only shown once login is re-enabled — user is always null while it's disabled */}
+        {user && (
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-500">{user.email}</span>
+            <button onClick={logout} className="text-sm text-slate-500 underline hover:text-slate-700">
+              Log out
+            </button>
+          </div>
+        )}
       </header>
 
       <main className="mx-auto max-w-4xl p-6">
