@@ -8,6 +8,7 @@ export interface Application {
   role: string;
   status: ApplicationStatus;
   appliedDate: string;
+  source: string | null; // link to the posting, or where you found it
   notes: string | null;
   createdAt: string;
   updatedAt: string;

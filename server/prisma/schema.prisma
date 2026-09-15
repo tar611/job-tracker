@@ -27,6 +27,7 @@ model Application {
   role        String
   status      ApplicationStatus @default(APPLIED)
   appliedDate DateTime          @default(now())
+  source      String? // link to the posting, or where you found it (LinkedIn, Glassdoor, etc.)
   notes       String?
   userId      String
   user        User              @relation(fields: [userId], references: [id])

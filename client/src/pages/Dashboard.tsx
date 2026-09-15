@@ -4,6 +4,15 @@ import type { Application, ApplicationStatus } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { ApplicationForm } from "../components/ApplicationForm";
 
+// Shows the domain (e.g. "linkedin.com") instead of the full URL in the table.
+function sourceLabel(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "Link";
+  }
+}
+
 const STATUS_LABELS: Record<ApplicationStatus, string> = {
   APPLIED: "Applied",
   INTERVIEWING: "Interviewing",
@@ -17,10 +26,16 @@ export function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Application | null>(null);
+  const [error, setError] = useState("");
 
   async function refresh() {
-    setApplications(await api.getApplications());
-    setLoading(false);
+    try {
+      setApplications(await api.getApplications());
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -49,13 +64,21 @@ export function Dashboard() {
   }
 
   async function handleStatusChange(app: Application, status: ApplicationStatus) {
-    await api.updateApplication(app.id, { status });
-    await refresh();
+    try {
+      await api.updateApplication(app.id, { status });
+      await refresh();
+    } catch (err) {
+      setError((err as Error).message);
+    }
   }
 
   async function handleDelete(id: string) {
-    await api.deleteApplication(id);
-    await refresh();
+    try {
+      await api.deleteApplication(id);
+      await refresh();
+    } catch (err) {
+      setError((err as Error).message);
+    }
   }
 
   return (
@@ -74,6 +97,9 @@ export function Dashboard() {
       </header>
 
       <main className="mx-auto max-w-4xl p-6">
+        {error && (
+          <p className="mb-4 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+        )}
         <div className="mb-4 flex justify-end">
           <button onClick={openCreate} className="rounded bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-700">
             + Add Application
@@ -93,6 +119,7 @@ export function Dashboard() {
                   <th className="px-4 py-2">Role</th>
                   <th className="px-4 py-2">Status</th>
                   <th className="px-4 py-2">Applied</th>
+                  <th className="px-4 py-2">Source</th>
                   <th className="px-4 py-2"></th>
                 </tr>
               </thead>
@@ -116,6 +143,20 @@ export function Dashboard() {
                       </select>
                     </td>
                     <td className="px-4 py-2 text-slate-500">{new Date(app.appliedDate).toLocaleDateString()}</td>
+                    <td className="px-4 py-2">
+                      {app.source ? (
+                        <a
+                          href={app.source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 underline hover:text-blue-800"
+                        >
+                          {sourceLabel(app.source)}
+                        </a>
+                      ) : (
+                        <span className="text-slate-300">—</span>
+                      )}
+                    </td>
                     <td className="whitespace-nowrap px-4 py-2 text-right">
                       <button onClick={() => openEdit(app)} className="mr-3 text-slate-500 hover:text-slate-900">
                         Edit

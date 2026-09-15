@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 
 // POST /api/applications — create a new application for the current user
 router.post("/", async (req, res) => {
-  const { company, role, status, notes, appliedDate } = req.body;
+  const { company, role, status, notes, source, appliedDate } = req.body;
   if (!company || !role) {
     return res.status(400).json({ error: "Company and role are required" });
   }
@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
       role,
       status,
       notes,
+      source,
       appliedDate: appliedDate ? new Date(appliedDate) : undefined,
       userId: req.userId!,
     },
@@ -47,10 +48,10 @@ router.put("/:id", async (req, res) => {
     return res.status(404).json({ error: "Application not found" });
   }
 
-  const { company, role, status, notes, appliedDate } = req.body;
+  const { company, role, status, notes, source, appliedDate } = req.body;
   const application = await prisma.application.update({
     where: { id: req.params.id },
-    data: { company, role, status, notes, appliedDate: appliedDate ? new Date(appliedDate) : undefined },
+    data: { company, role, status, notes, source, appliedDate: appliedDate ? new Date(appliedDate) : undefined },
   });
   res.json(application);
 });

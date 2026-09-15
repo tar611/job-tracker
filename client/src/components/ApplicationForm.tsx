@@ -20,20 +20,31 @@ export function ApplicationForm({ initial, onSave, onClose }: Props) {
   const [company, setCompany] = useState(initial?.company ?? "");
   const [role, setRole] = useState(initial?.role ?? "");
   const [status, setStatus] = useState<ApplicationStatus>(initial?.status ?? "APPLIED");
+  const [source, setSource] = useState(initial?.source ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSaving(true);
-    await onSave({ company, role, status, notes });
-    setSaving(false);
+    setError("");
+    try {
+      await onSave({ company, role, status, source, notes });
+    } catch (err) {
+      // Without this, a failed request (e.g. backend down) left the button
+      // stuck on "Saving…" forever with no explanation.
+      setError((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 p-4">
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4 rounded-lg bg-white p-6 shadow-xl">
         <h2 className="text-lg font-semibold text-slate-900">{initial ? "Edit Application" : "New Application"}</h2>
+        {error && <p className="text-sm text-red-600">{error}</p>}
         <input
           value={company}
           onChange={(e) => setCompany(e.target.value)}
@@ -59,6 +70,13 @@ export function ApplicationForm({ initial, onSave, onClose }: Props) {
             </option>
           ))}
         </select>
+        <input
+          type="url"
+          value={source ?? ""}
+          onChange={(e) => setSource(e.target.value)}
+          placeholder="Source (link to posting, LinkedIn, Glassdoor, etc.)"
+          className="w-full rounded border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+        />
         <textarea
           value={notes ?? ""}
           onChange={(e) => setNotes(e.target.value)}
