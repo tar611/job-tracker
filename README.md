@@ -32,6 +32,8 @@ Generate a real `JWT_SECRET` (don't reuse the local `.env` placeholder) with:
 openssl rand -hex 32
 ```
 
+Live backend: https://job-tracker-api-hvw3.onrender.com/api/health
+
 **Frontend — Vercel.** *(documented once set up)*
 
 ## Running locally
