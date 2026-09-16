@@ -25,6 +25,10 @@ jobs:
           cache: npm
           cache-dependency-path: server/package-lock.json
       - run: npm ci
+      # Explicit, rather than relying on @prisma/client's postinstall hook —
+      # that didn't run in CI's fresh install, leaving PrismaClient's
+      # generated types missing and failing the typecheck below.
+      - run: npx prisma generate
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
