@@ -14,6 +14,26 @@ A full-stack app for tracking job applications — company, role, status, and no
 | ORM       | Prisma                                              |
 | Auth      | JWT + bcrypt (built manually, currently disabled)   |
 
+## Deployment
+
+**Backend — Render.** A Web Service pointed at this repo:
+
+| Setting | Value |
+|---|---|
+| Root Directory | `server` |
+| Build Command | `npm install && npx prisma generate && npm run build` |
+| Start Command | `npm start` |
+| Environment variables | `DATABASE_URL` (Neon connection string), `JWT_SECRET` (random string — see below) |
+
+The `prisma generate` step in the build command is required, not optional — `@prisma/client`'s postinstall hook doesn't reliably run in a fresh CI/deploy environment, and without it `tsc` fails with `Module '"@prisma/client"' has no exported member 'PrismaClient'`. Don't set a `PORT` variable — Render assigns and injects its own, which the app already reads via `process.env.PORT`.
+
+Generate a real `JWT_SECRET` (don't reuse the local `.env` placeholder) with:
+```bash
+openssl rand -hex 32
+```
+
+**Frontend — Vercel.** *(documented once set up)*
+
 ## Running locally
 
 ```bash
