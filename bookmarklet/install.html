@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Job Tracker Bookmarklet</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 560px; margin: 60px auto; padding: 0 20px; color: #1e293b; }
+  h1 { font-size: 1.4rem; }
+  .btn {
+    display: inline-block; background: #0f172a; color: white; padding: 10px 18px;
+    border-radius: 6px; text-decoration: none; font-weight: 600; cursor: grab;
+  }
+  .box { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 20px 0; }
+  code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  ol { padding-left: 1.2em; }
+</style>
+</head>
+<body>
+  <h1>Job Tracker — Quick Add Bookmarklet</h1>
+  <p>Drag this button to your bookmarks bar:</p>
+
+  <p><a class="btn" href="javascript:(function%20()%20%7B%20var%20API_URL%20%3D%20%22http%3A%2F%2Flocalhost%3A4000%22%3B%20var%20title%20%3D%20document.title%3B%20var%20parts%20%3D%20title.split(%2F%5Cs%5B-%7C%5D%5Cs%2F)%3B%20var%20guessRole%20%3D%20parts.length%20%3E%3D%202%20%3F%20parts%5B0%5D.trim()%20%3A%20title%3B%20var%20guessCompany%20%3D%20parts.length%20%3E%3D%202%20%3F%20parts%5B1%5D.trim()%20%3A%20%22%22%3B%20var%20company%20%3D%20prompt(%22Company%3F%22%2C%20guessCompany)%3B%20if%20(company%20%3D%3D%3D%20null)%20return%3B%20var%20role%20%3D%20prompt(%22Role%3F%22%2C%20guessRole)%3B%20if%20(role%20%3D%3D%3D%20null)%20return%3B%20fetch(API_URL%20%2B%20%22%2Fapi%2Fapplications%22%2C%20%7B%20method%3A%20%22POST%22%2C%20headers%3A%20%7B%20%22Content-Type%22%3A%20%22application%2Fjson%22%20%7D%2C%20body%3A%20JSON.stringify(%7B%20company%3A%20company%2C%20role%3A%20role%2C%20source%3A%20location.href%20%7D)%2C%20%7D)%20.then(function%20(res)%20%7B%20if%20(res.ok)%20return%20alert(%22Added%20to%20Job%20Tracker%20%E2%9C%85%22)%3B%20return%20res.json().then(function%20(body)%20%7B%20alert(%22Failed%3A%20%22%20%2B%20(body.error%20%7C%7C%20res.status))%3B%20%7D)%3B%20%7D)%20.catch(function%20(err)%20%7B%20alert(%22Failed%3A%20%22%20%2B%20err.message%20%2B%20%22%5Cn%5CnIs%20the%20backend%20running%3F%22)%3B%20%7D)%3B%20%7D)()%3B">➕ Add to Job Tracker</a></p>
+
+  <div class="box">
+    <strong>How to use it:</strong>
+    <ol>
+      <li>Drag the button above onto your browser's bookmarks bar (make sure it's visible: <code>Cmd+Shift+B</code> on Mac).</li>
+      <li>Go apply for a job as normal, on any site.</li>
+      <li>On the job posting (or confirmation) page, click the bookmark.</li>
+      <li>Confirm/edit the company and role it guesses from the page title, hit OK.</li>
+      <li>It's added to your tracker, with the page URL saved as the Source link.</li>
+    </ol>
+  </div>
+
+  <p><strong>Note:</strong> this bookmarklet points at <code>http://localhost:4000</code>, so it only works while your backend is running locally. If you deploy the backend live, edit <code>API_URL</code> in <code>bookmarklet/tracker.js</code>, run <code>node bookmarklet/build.js</code>, and re-drag the updated button here.</p>
+
+  <p>If dragging doesn't work in your browser, right-click the button → "Copy Link" → manually create a new bookmark and paste it as the URL.</p>
+</body>
+</html>

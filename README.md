@@ -103,7 +103,27 @@ This section explains what every file in the repo is for — useful if you're ne
 | `src/pages/Signup.tsx` | The signup page/form. Same status as Login — functional, just not linked to right now. |
 | `src/pages/Dashboard.tsx` | The main screen: fetches the application list, renders it as a table, and hosts the "Add Application" button and the edit/delete actions. |
 
+### `bookmarklet/` (the quick-add browser tool)
+
+| File | What it's for |
+|---|---|
+| `tracker.js` | The readable source of the bookmarklet — what actually runs when you click it. |
+| `build.js` | A small Node script that strips comments from `tracker.js`, URL-encodes it into a `javascript:` link, and writes `install.html`. Run it with `node bookmarklet/build.js` after editing `tracker.js`. |
+| `install.template.html` | The install page's HTML, with a placeholder where the generated link gets inserted. |
+| `install.html` | *(generated, not hand-edited)* — the actual page you open in a browser to drag the bookmarklet into your bookmarks bar. |
+
 ---
+
+## Bonus: quick-add bookmarklet
+
+`bookmarklet/` contains a browser bookmarklet that adds an application in one click from any job posting page, instead of opening the app and filling out the form manually.
+
+1. Open `bookmarklet/install.html` in your browser (drag the button to your bookmarks bar).
+2. While on a job posting, click the bookmark.
+3. Confirm/edit the company and role it guesses from the page title.
+4. It POSTs straight to your API, with the page's URL saved as the Source link.
+
+It's hardcoded to `http://localhost:4000`, so it only works while the backend is running locally. To point it at a deployed backend: edit `API_URL` in `bookmarklet/tracker.js`, run `node bookmarklet/build.js`, and re-drag the regenerated button.
 
 ## Re-enabling login
 

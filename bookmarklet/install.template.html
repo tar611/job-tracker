@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Job Tracker Bookmarklet</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 560px; margin: 60px auto; padding: 0 20px; color: #1e293b; }
+  h1 { font-size: 1.4rem; }
+  .btn {
+    display: inline-block; background: #0f172a; color: white; padding: 10px 18px;
+    border-radius: 6px; text-decoration: none; font-weight: 600; cursor: grab;
+  }
+  .box { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 20px 0; }
+  code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  ol { padding-left: 1.2em; }
+</style>
+</head>
+<body>
+  <h1>Job Tracker — Quick Add Bookmarklet</h1>
+  <p>Drag this button to your bookmarks bar:</p>
+
+  <p><a class="btn" href="__BOOKMARKLET_HREF__">➕ Add to Job Tracker</a></p>
+
+  <div class="box">
+    <strong>How to use it:</strong>
+    <ol>
+      <li>Drag the button above onto your browser's bookmarks bar (make sure it's visible: <code>Cmd+Shift+B</code> on Mac).</li>
+      <li>Go apply for a job as normal, on any site.</li>
+      <li>On the job posting (or confirmation) page, click the bookmark.</li>
+      <li>Confirm/edit the company and role it guesses from the page title, hit OK.</li>
+      <li>It's added to your tracker, with the page URL saved as the Source link.</li>
+    </ol>
+  </div>
+
+  <p><strong>Note:</strong> this bookmarklet points at <code>http://localhost:4000</code>, so it only works while your backend is running locally. If you deploy the backend live, edit <code>API_URL</code> in <code>bookmarklet/tracker.js</code>, run <code>node bookmarklet/build.js</code>, and re-drag the updated button here.</p>
+
+  <p>If dragging doesn't work in your browser, right-click the button → "Copy Link" → manually create a new bookmark and paste it as the URL.</p>
+</body>
+</html>
