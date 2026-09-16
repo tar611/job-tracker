@@ -1,8 +1,13 @@
 import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
+// Uses process.env directly (not the env() helper) — env() throws
+// immediately if the variable is missing, which broke `prisma generate`
+// in CI (no .env there, and generate doesn't actually need a real DB).
+// Commands that do need it (db push, migrate) will still fail normally
+// if DATABASE_URL is genuinely unset.
 export default defineConfig({
   datasource: {
-    url: env("DATABASE_URL"),
+    url: process.env.DATABASE_URL,
   },
 });
