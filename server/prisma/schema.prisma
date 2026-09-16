@@ -28,6 +28,7 @@ model Application {
   status      ApplicationStatus @default(APPLIED)
   appliedDate DateTime          @default(now())
   source      String? // link to the posting, or where you found it (LinkedIn, Glassdoor, etc.)
+  note        String? // short quick note, e.g. "CV included" or "Referral"
   notes       String?
   userId      String
   user        User              @relation(fields: [userId], references: [id])

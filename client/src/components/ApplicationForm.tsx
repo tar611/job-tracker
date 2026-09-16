@@ -21,6 +21,7 @@ export function ApplicationForm({ initial, onSave, onClose }: Props) {
   const [role, setRole] = useState(initial?.role ?? "");
   const [status, setStatus] = useState<ApplicationStatus>(initial?.status ?? "APPLIED");
   const [source, setSource] = useState(initial?.source ?? "");
+  const [note, setNote] = useState(initial?.note ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -30,7 +31,7 @@ export function ApplicationForm({ initial, onSave, onClose }: Props) {
     setSaving(true);
     setError("");
     try {
-      await onSave({ company, role, status, source, notes });
+      await onSave({ company, role, status, source, note, notes });
     } catch (err) {
       // Without this, a failed request (e.g. backend down) left the button
       // stuck on "Saving…" forever with no explanation.
@@ -75,6 +76,12 @@ export function ApplicationForm({ initial, onSave, onClose }: Props) {
           value={source ?? ""}
           onChange={(e) => setSource(e.target.value)}
           placeholder="Source (link to posting, LinkedIn, Glassdoor, etc.)"
+          className="w-full rounded border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
+        />
+        <input
+          value={note ?? ""}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Note (e.g. CV included, referral)"
           className="w-full rounded border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
         />
         <textarea

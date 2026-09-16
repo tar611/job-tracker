@@ -120,6 +120,7 @@ export function Dashboard() {
                   <th className="px-4 py-2">Status</th>
                   <th className="px-4 py-2">Applied</th>
                   <th className="px-4 py-2">Source</th>
+                  <th className="px-4 py-2">Note</th>
                   <th className="px-4 py-2"></th>
                 </tr>
               </thead>
@@ -157,6 +158,7 @@ export function Dashboard() {
                         <span className="text-slate-300">—</span>
                       )}
                     </td>
+                    <td className="px-4 py-2 text-slate-500">{app.note || <span className="text-slate-300">—</span>}</td>
                     <td className="whitespace-nowrap px-4 py-2 text-right">
                       <button onClick={() => openEdit(app)} className="mr-3 text-slate-500 hover:text-slate-900">
                         Edit

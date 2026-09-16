@@ -9,6 +9,7 @@ export interface Application {
   status: ApplicationStatus;
   appliedDate: string;
   source: string | null; // link to the posting, or where you found it
+  note: string | null; // short quick note, e.g. "CV included" or "Referral"
   notes: string | null;
   createdAt: string;
   updatedAt: string;
