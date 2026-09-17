@@ -122,6 +122,7 @@ This section explains what every file in the repo is for — useful if you're ne
 | `src/test/setup.ts` | Runs before every test file — adds `jest-dom`'s matchers (`toBeInTheDocument`, etc.) and unmounts each rendered component after its test, so leftover DOM from one test can't affect the next. |
 | `src/**/__tests__/*.test.tsx` | Component tests (`ApplicationForm`, `Dashboard`) using React Testing Library — render the component, interact with it like a user would (typing, clicking), and assert on what shows up. Includes regression tests for the two silent-failure bugs fixed earlier. Run with `npm test`. |
 | `.env` *(not committed)* | Frontend config — currently just `VITE_API_URL`, the address of the backend API. (Vite only exposes env vars prefixed with `VITE_` to the browser, as a safety measure.) |
+| `vercel.json` | Tells Vercel to serve `index.html` for every path instead of 404ing. Needed for any single-page app with client-side routing (React Router) — without it, a direct visit to e.g. `/dashboard` 404s because Vercel looks for a literal file at that path instead of handing it to React Router. |
 | `src/main.tsx` | The actual entry point — finds `<div id="root">` in `index.html` and tells React to render `<App />` into it. |
 | `src/App.tsx` | Defines the app's routes (which URL shows which page) using React Router: `/login`, `/signup`, `/dashboard`. |
 | `src/index.css` | Global stylesheet — just one line importing Tailwind, which then generates all the utility classes (`bg-slate-50`, `rounded`, etc.) used throughout the components. |
